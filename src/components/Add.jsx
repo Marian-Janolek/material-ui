@@ -6,8 +6,15 @@ import {
   Container,
   TextField,
   MenuItem,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormLabel,
+  Button,
+  Snackbar,
 } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
+import MuiAlert from '@material-ui/lab/Alert';
 import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,12 +38,30 @@ const useStyles = makeStyles((theme) => ({
       height: '100vh',
     },
   },
+  form: {
+    padding: theme.spacing(2),
+  },
+  item: {
+    marginBottom: theme.spacing(3),
+  },
 }));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const Add = () => {
   const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const classes = useStyles();
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenAlert(false);
+  };
 
   return (
     <>
@@ -79,9 +104,62 @@ const Add = () => {
                 <MenuItem value="Unlisted">Unlisted</MenuItem>
               </TextField>
             </div>
+            <div className={classes.item}>
+              <FormLabel component="legend">Who can comment?</FormLabel>
+              <RadioGroup>
+                <FormControlLabel
+                  value="Everybody"
+                  control={<Radio size="small" />}
+                  label="Everybody"
+                />
+                <FormControlLabel
+                  value="My Friends"
+                  control={<Radio size="small" />}
+                  label="My Friends"
+                />
+                <FormControlLabel
+                  value="Nobody"
+                  control={<Radio size="small" />}
+                  label="Nobody"
+                />
+                <FormControlLabel
+                  value="Custom"
+                  disabled
+                  control={<Radio size="small" />}
+                  label="Custom (Premium)"
+                />
+              </RadioGroup>
+            </div>
+            <div className={classes.item}>
+              <Button
+                variant="outlined"
+                color="primary"
+                style={{ marginRight: 20 }}
+                onClick={() => setOpenAlert(true)}
+              >
+                Create
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+            </div>
           </form>
         </Container>
       </Modal>
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Alert onClose={handleClose} severity="success">
+          This is a success message!
+        </Alert>
+      </Snackbar>
     </>
   );
 };
