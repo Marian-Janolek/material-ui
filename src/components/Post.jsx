@@ -12,14 +12,12 @@ import {
 const useStyles = makeStyles((theme) => ({
   media: {
     height: '250px',
-  },
-  card: {
-    marginBottom: theme.spacing(5),
-  },
-  media: {
     [theme.breakpoints.down('sm')]: {
       height: '150px',
     },
+  },
+  card: {
+    marginBottom: theme.spacing(5),
   },
 }));
 
